@@ -1,5 +1,8 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { ExpressRootError } from "./interfaces/Errors";
+import connectDB from "./services/db";
+import dotenv from 'dotenv';
+dotenv.config();
 
 var createError = require('http-errors');
 // var express = require('express');
@@ -10,6 +13,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 
 var app : Express = express();
+const connection = connectDB();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
