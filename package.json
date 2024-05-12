@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "nodemon ./dist/index.js",
-    "watch": "nodemon -watch 'src/**/*.ts' --exec ts-node src/app.ts"
+    "start": "nodemon ./routes/index.js",
+    "dev": "nodemon --watch './**/*.ts' --exec ts-node app.ts"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
