@@ -107,7 +107,9 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src/**/*.ts",
-    "bin/www.ts"
+    "app.ts",
+    "bin/www.ts",
+    "interfaces/**/*.ts",
+    "routes/**/*.ts"
   ]
 }
