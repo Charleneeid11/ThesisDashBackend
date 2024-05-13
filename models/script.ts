@@ -5,7 +5,10 @@ const scriptSchema = new Schema<Script> (
     {
         _id: { type: mongoose.Schema.Types.ObjectId, required: true },
         uid: { type: mongoose.Schema.Types.ObjectId, required: true },
-        crsnum: { type: String }
+        name: { type: String },
+        size: { type: Number },
+        language: { type: String, enum: [ 'Python', 'Java' ] },
+        crsnum: { type: String, required: true }
     }
 )
 
