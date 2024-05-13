@@ -5,7 +5,9 @@
   "scripts": {
     "build": "tsc",
     "start": "nodemon ./routes/index.js",
-    "dev": "nodemon --watch './**/*.ts' --exec ts-node app.ts"
+    "dev": "nodemon --watch './**/*.ts' --exec ts-node app.ts",
+    "lint": "eslint . --fix",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

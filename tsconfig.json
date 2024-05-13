@@ -110,6 +110,7 @@
     "app.ts",
     "bin/www.ts",
     "interfaces/**/*.ts",
-    "routes/**/*.ts"
+    "routes/**/*.ts",
+    "services/**/*.ts"
   ]
 }
