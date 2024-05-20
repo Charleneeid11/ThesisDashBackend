@@ -3,7 +3,6 @@ import mongoose, { Schema, model } from "mongoose"
 
 const scriptSchema = new Schema<Script> (
     {
-        _id: { type: mongoose.Schema.Types.ObjectId, required: true },
         uid: { type: mongoose.Schema.Types.ObjectId, required: true },
         name: { type: String },
         size: { type: Number },
