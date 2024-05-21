@@ -4,7 +4,7 @@ import adminController from "../controllers/admin"
 
 const router: Router = express.Router()
 
-router.get('/', adminController.getUsers);
+router.get('/', adminController.getUsers)
 router.post('/', adminController.signup)
 router.post('/login', adminController.login)
 router.post('/refreshaccesstoken', adminController.refreshAccessToken)
