@@ -3,7 +3,6 @@ import { ExpressRootError } from "./interfaces/Errors";
 import connectDB from "./services/db";
 import adminRouter from "./routes/admin"
 import folderRouter from "./routes/folder"
-import fileRouter from "./routes/file"
 import multer from 'multer'
 import dotenv from 'dotenv';
 dotenv.config();
@@ -42,7 +41,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/admin', adminRouter)
 app.use('/folder', folderRouter)
-app.use('/file', fileRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

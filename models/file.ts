@@ -10,4 +10,4 @@ const fileSchema = new Schema<File> (
 
 const fileModel = model( 'File', fileSchema )
 
-export default fileModel;
+export default fileModel

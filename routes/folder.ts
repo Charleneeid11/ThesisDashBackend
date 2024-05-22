@@ -1,11 +1,11 @@
-import express from "express";
-import type { Router } from "express";
-import folderController from "../controllers/folder"
+import express from 'express'
+import folderController from '../controllers/folder'
 
-const router: Router = express.Router()
+const router = express.Router()
 
+router.post('/create', folderController.upload.array('files', 10), folderController.create)
 router.get('/', folderController.getFolders)
-router.post('/', folderController.create)
-router.delete('/:fid', folderController.deleteFolder)
+router.delete('/:id', folderController.deleteFolder)
 
 export default router
+
