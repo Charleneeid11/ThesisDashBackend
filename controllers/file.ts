@@ -28,17 +28,18 @@ const uploadFiles = async (req: Request, res: Response): Promise<any> => {
     try {
         const files = req.files as Express.Multer.File[];
         const savedFiles = await Promise.all(files.map(async file => {
-            const newFile = new fileModel({ name: file.originalname, size: file.size })
+            const newFile = new fileModel({ fid: 123, name: file.originalname, size: file.size })
             return await newFile.save()
         }))
         return res.status(201).json({ message: 'Files have been successfully uploaded.', files: savedFiles })
     } catch (error) {
-        console.error("error:\n", error)
         return res.status(500).json({ error: 'An error occurred while attempting to upload files.' })
     }
 }
 
 export default {
     upload,
-    uploadFiles
+    uploadFiles,
+    storage,
+    fileFilter
 }
