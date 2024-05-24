@@ -3,7 +3,6 @@ import mongoose, { Schema, model } from "mongoose"
 
 const folderSchema = new Schema<Folder> (
     {
-        uid: { type: mongoose.Schema.Types.ObjectId, required: true },
         name: { type: String, required: true },
         files: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
         size: { type: Number },
