@@ -59,87 +59,60 @@ const getFolders = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-//
-// const editFolder = async (req: Request, res: Response): Promise<any> => {
-//     try {
-//         const fid = req.params.id
-//         if (!mongoose.Types.ObjectId.isValid(fid)) {
-//             return res.status(400).json({ error: 'Invalid folder ID.' })
-//         }
-//         const folder = await folderModel.findById(fid)
-//         if (!folder) {
-//             return res.status(404).json({ error: 'Folder not found.' })
-//         }
-//         const { removeFileIds } = req.body as { removeFileIds: string[] }
-//         if (removeFileIds && removeFileIds.length > 0) {
-//             for (const fileId of removeFileIds) {
-//                 if (mongoose.Types.ObjectId.isValid(fileId)) {
-//                     await fileModel.findByIdAndDelete(fileId)
-//                 }
-//             }
-//             folder.files = folder.files.filter(fileId => !removeFileIds.includes(fileId.toString()))
-//         }
-//         if (req.files) {
-//             const files = req.files as Express.Multer.File[]
-//             const newFileIds = await Promise.all(files.map(async file => {
-//                 const newFile = new fileModel({ name: file.originalname, size: file.size })
-//                 const savedFile = await newFile.save()
-//                 return savedFile._id
-//             }))
-//             folder.files = folder.files.concat(newFileIds)
-//         }
-//         await folder.save()
-//         return res.status(200).json({ message: 'Folder successfully updated.' })
-//     } catch (error) {
-//         console.error("error:\n", error)
-//         return res.status(500).json({ error: 'An error occurred while attempting to edit the folder.' })
-//     }
-// }
-
 const editFolder = async (req: Request, res: Response): Promise<any> => {
     try {
-        console.log("Request Body:", req.body); // Log the entire request body
-        const fid = req.params.id;
+        // Extract folder ID from request parameters
+        const fid = req.params.id
+        // Check if the provided folder ID is a valid MongoDB ObjectId
         if (!mongoose.Types.ObjectId.isValid(fid)) {
-            return res.status(400).json({ error: 'Invalid folder ID.' });
+            return res.status(400).json({ error: 'Invalid folder ID.' })
         }
-
-        const folder = await folderModel.findById(fid);
+        // Find the folder by its ID
+        const folder = await folderModel.findById(fid)
+        // If folder is not found, return a 404 error
         if (!folder) {
-            return res.status(404).json({ error: 'Folder not found.' });
+            return res.status(404).json({ error: 'Folder not found.' })
         }
-
-        const { removeFileIds } = req.body as { removeFileIds: string[] };
-        console.log("Remove File IDs:", removeFileIds); // Log removeFileIds
-
-        if (removeFileIds && removeFileIds.length > 0) {
-            for (const fileId of removeFileIds) {
+        // Extract removeFileIds from request body
+        const { removeFileIds } = req.body
+        let parsedRemoveFileIds = []
+        // Try to parse removeFileIds into a JSON array
+        try {
+            parsedRemoveFileIds = JSON.parse(removeFileIds)
+        } catch (e) {
+            console.error("Failed to parse removeFileIds:", e)
+        }
+        // If there are valid file IDs to remove
+        if (parsedRemoveFileIds && parsedRemoveFileIds.length > 0) {
+            for (const fileId of parsedRemoveFileIds) {
+                // Check if each file ID is a valid MongoDB ObjectId and delete the corresponding file
                 if (mongoose.Types.ObjectId.isValid(fileId)) {
-                    await fileModel.findByIdAndDelete(fileId);
+                    await fileModel.findByIdAndDelete(fileId)
                 }
             }
-            folder.files = folder.files.filter(fileId => !removeFileIds.includes(fileId.toString()));
+            // Remove the deleted file IDs from the folder's files array
+            folder.files = folder.files.filter(fileId => !parsedRemoveFileIds.includes(fileId.toString()))
         }
-
+        // If new files are uploaded
         if (req.files) {
-            const files = req.files as Express.Multer.File[];
-            console.log("Uploaded Files:", files); // Log uploaded files
-
+            const files = req.files as Express.Multer.File[]
+            // Save each new file to the database and collect their IDs
             const newFileIds = await Promise.all(files.map(async file => {
-                const newFile = new fileModel({ name: file.originalname, size: file.size });
-                const savedFile = await newFile.save();
-                return savedFile._id;
-            }));
-            folder.files = folder.files.concat(newFileIds);
+                const newFile = new fileModel({ name: file.originalname, size: file.size })
+                const savedFile = await newFile.save()
+                return savedFile._id
+            }))
+            // Add new file IDs to the folder's files array
+            folder.files = folder.files.concat(newFileIds)
         }
-
-        console.log("Updated Folder Files:", folder.files); // Log updated folder files
-
-        await folder.save();
-        return res.status(200).json({ message: 'Folder successfully updated.' });
+        // Save the updated folder
+        await folder.save()
+        // Return a success message
+        return res.status(200).json({ message: 'Folder successfully updated.' })
     } catch (error) {
-        console.error("Error:\n", error);
-        return res.status(500).json({ error: 'An error occurred while attempting to edit the folder.' });
+        // Log the error and return a 500 error response
+        console.error("Error:\n", error)
+        return res.status(500).json({ error: 'An error occurred while attempting to edit the folder.' })
     }
 }
 
