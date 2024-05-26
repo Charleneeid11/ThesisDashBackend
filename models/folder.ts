@@ -7,7 +7,9 @@ const folderSchema = new Schema<Folder> (
         files: [{ type: mongoose.Schema.Types.ObjectId, required: true }],
         size: { type: Number },
         language: { type: String, enum: [ 'Python', 'Java' ] },
-        crsnum: { type: String, required: true }
+        crsnum: { type: String, required: true },
+        grade: { type: Number, required: true },
+        pts_poss: { type: Number, required: true }
     }
 )
 

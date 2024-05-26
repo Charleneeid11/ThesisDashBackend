@@ -7,5 +7,7 @@ export interface Folder {
     files: mongoose.Schema.Types.ObjectId[],
     size: number,
     language: 'Python' | 'Java',
-    crsnum: string
+    crsnum: string,
+    grade: number,
+    pts_poss: number 
 }

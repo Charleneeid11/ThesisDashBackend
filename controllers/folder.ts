@@ -30,7 +30,7 @@ const upload = multer({ storage: storage, fileFilter: fileFilter })
 
 const create = async (req: Request, res: Response): Promise<any> => {
     try {
-        const { name, crsnum } = req.body as { name: string, crsnum: string }
+        const { name, crsnum, grade, pts_poss } = req.body as { name: string, crsnum: string, grade: number, pts_poss: number }
         const dupfolder = await folderModel.findOne({ name })
         if (dupfolder) {
             return res.status(409).json({ error: 'A folder with this name already exists.' })
@@ -41,7 +41,7 @@ const create = async (req: Request, res: Response): Promise<any> => {
             const savedFile = await newFile.save()
             return savedFile._id
         }))
-        const newFolder = new folderModel({ name, files: fileIds, crsnum })
+        const newFolder = new folderModel({ name, files: fileIds, crsnum, grade, pts_poss })
         await newFolder.save()
         return res.status(201).json({ message: 'New code folder has been successfully created.', folder: newFolder })
     } catch (error) {
